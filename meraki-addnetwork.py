@@ -1,10 +1,28 @@
 from meraki import meraki as m
 from vars import apikey, org
 from pprint import pprint
+import json
 
 # Create a network
 # https://dashboard.meraki.com/api_docs#create-a-network
 #def addnetwork(apikey, orgid, name, nettype, tags, tz, suppressprint=False):
+
+#Vars Verification
+def __validip(ip):
+    """
+
+    Args:
+        ip: IP Address to be tested
+
+    Returns: None, raises ValueError on invalid formating for IP address
+
+    """
+    try:
+        ip_address(ip)
+    except ValueError:
+        raise ValueError('Invalid IP Address')
+
+
 
 #Local Vars
 adpcode = input('What is the sites ADP code? ')
@@ -29,7 +47,7 @@ tags = adpcode
 #Prompt for settings
 
 #Search for Site first based on tags and name
-print('Creating network with the name of '+name+)
+print('Creating network with the name of '+name)
 
 #Confirm and submit
 
@@ -38,13 +56,16 @@ result = m.addnetwork(apikey,orgid,networkname,nettype,tags,tz,suppressprint=Tru
 pprint(result) 
 
 #import results to varibles
-def addnetwork_results(parameter1,parameter2):
-	#do something with parameters
-	print(parameter1)
-	print(str(parameter2))
+the_dict = json.loads(result)
 
 
 # Bind a network to a template.
 # https://dashboard.meraki.com/api_docs#bind-a-network-to-a-template
-result = m.bindtotemplate(apikey, networkid, templateid, autobind=False, suppressprint=False):
-pprint(result) 
+#result = m.bindtotemplate(apikey, networkid, templateid, autobind=False, suppressprint=False):
+pprint(id) 
+
+
+# Claim a device into a network
+# https://dashboard.meraki.com/api_docs#claim-a-device-into-a-network
+#def adddevtonet(apikey, networkid, serial, suppressprint=False):
+
