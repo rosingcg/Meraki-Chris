@@ -17,7 +17,7 @@ adpcode = input('What is the sites ADP code? ')
 friendlyname = input('What is the friendly name for the site? ')
 #networkname = adpcode+friendlyname
 networkname = adpcode+"-"+friendlyname
-print(adpcode)
+#print(adpcode)
 #print(siteaddressstreet)
 #print(siteaddresscity,siteaddressstate)
 print(networkname)

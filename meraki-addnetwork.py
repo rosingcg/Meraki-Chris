@@ -20,11 +20,15 @@ name = networkname
 orgid = org
 nettype = "wireless Switch"
 tz = 'America/Chicago'
+
+#add tags for ADP Code, State, and City.
 tags = adpcode
 
 #Script for what Organization?
 
 #Prompt for settings
+
+#Search for Site first based on tags and name
 print('Network with the name of '+name+' created')
 
 #Confirm and submit
