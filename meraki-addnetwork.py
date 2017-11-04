@@ -18,7 +18,7 @@ networkname = adpcode+"-"+friendlyname
 #API Vars
 name = networkname
 orgid = org
-nettype = "wireless Switch"
+nettype = "wireless switch"
 tz = 'America/Chicago'
 
 #add tags for ADP Code, State, and City.
@@ -29,10 +29,22 @@ tags = adpcode
 #Prompt for settings
 
 #Search for Site first based on tags and name
-print('Network with the name of '+name+' created')
+print('Creating network with the name of '+name+)
 
 #Confirm and submit
 
 
 result = m.addnetwork(apikey,orgid,networkname,nettype,tags,tz,suppressprint=True) 
-print(result) 
+pprint(result) 
+
+#import results to varibles
+def addnetwork_results(parameter1,parameter2):
+	#do something with parameters
+	print(parameter1)
+	print(str(parameter2))
+
+
+# Bind a network to a template.
+# https://dashboard.meraki.com/api_docs#bind-a-network-to-a-template
+result = m.bindtotemplate(apikey, networkid, templateid, autobind=False, suppressprint=False):
+pprint(result) 
