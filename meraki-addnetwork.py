@@ -34,4 +34,5 @@ print('Network with the name of '+name+' created')
 #Confirm and submit
 
 
-#post m.addnetwork(apikey,orgid,name,nettype,tags,tz)
+result = m.addnetwork(apikey,orgid,networkname,nettype,tags,tz,suppressprint=True) 
+print(result) 
