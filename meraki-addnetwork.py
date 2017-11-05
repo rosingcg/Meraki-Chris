@@ -2,6 +2,8 @@ from meraki import meraki as m
 from vars import apikey, org
 from pprint import pprint
 import json
+import requests
+import re
 
 # Create a network
 # https://dashboard.meraki.com/api_docs#create-a-network
@@ -25,9 +27,14 @@ def __validip(ip):
 
 
 #Local Vars
-adpcode = input('What is the sites ADP code? ')
 
-#Build Regex Check ([A-Z][A-Z][0-9][0-9][0-9])
+while True adpcode = input('What is the sites ADP code? ')
+
+    while not re.match("^[A-Z][A-Z][0-9][0-9][0-9]", adpcode):
+        print ("Error! Make sure your ADP Code contains 2 letters, then 3 numbers")
+    else:
+        print("ADP Code is "+ adpcode)
+
 friendlyname = input('What is the friendly name for the site? ')
 
 #limit to 32 characters, only _ allowed
@@ -53,10 +60,11 @@ print('Creating network with the name of '+name)
 
 
 result = m.addnetwork(apikey,orgid,networkname,nettype,tags,tz,suppressprint=True) 
-pprint(result) 
+#pprint(result) 
+
 
 #import results to varibles
-the_dict = json.loads(result)
+#the_string = json.loads(result)
 
 
 # Bind a network to a template.
