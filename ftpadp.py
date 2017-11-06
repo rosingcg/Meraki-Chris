@@ -26,7 +26,7 @@ try:
 except:
     print(bcolors.FAIL, "Error", bcolors.ENDC)
     
-
+#Dataframes for panda to read CSV
 df = pd.read_csv(filename)
 
 #you can then get whatever cell value you are looking for.  Many ways of doing this :
