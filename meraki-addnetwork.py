@@ -58,7 +58,7 @@ while True:
 
     while not re.match("^[A-Za-z_]{0,25}$", friendlyname):
         print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
-        friendlyname = input('What is the friendly name for the site? ')
+        friendlyname = input((bcolors.QUESTION + 'What is the friendly name for the site? '+ bcolors.ENDC )
     else:
         print("ADP Code is "+ friendlyname)
         break
