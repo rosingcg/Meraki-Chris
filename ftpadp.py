@@ -2,6 +2,7 @@ from meraki import meraki as m
 from vars import ftpusername, ftppassword
 from pprint import pprint
 import ftplib
+import pandas as pd
 
 class bcolors:
     QUESTION = '\033[95m'
@@ -24,3 +25,13 @@ try:
     print(bcolors.VARIABLE, filename, bcolors.RESULT, 'was downloaded successfully.', bcolors.ENDC)
 except:
     print(bcolors.FAIL, "Error", bcolors.ENDC)
+    
+
+df = pd.read_csv(filename)
+
+#you can then get whatever cell value you are looking for.  Many ways of doing this :
+value_you_want = df.iloc[0][1] # where the cell value you know is in the first row , second column
+value_you_want = df.loc[0]['column name'] #notice the change from iloc to loc
+value_you_want = df.loc[df['sitecode column']=='sitecode_value']['ip address column'] #searches whole CSV and finds row that
+                                          # contains the sitecode_value inside the sitecode column, AND returns the ip address
+                                          # column value of that row
