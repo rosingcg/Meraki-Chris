@@ -1,11 +1,23 @@
-## Welcome to GitHub Pages
+## Cisco Meraki Scripts
 
-You can use the [editor on GitHub](https://github.com/rosingcg/Meraki/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+I am fairly new to scripting and APIs.  We are about to deploy Meraki Switches and APs to about 600+ sites, so I need an easy way to do this.  For now, I am starting with the basic script to ask questions and push the answers.  One script is just going to run through everything. Eventually, we will want to have validation for inputs and checks.  
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### VAR File
 
-### Markdown
+Create a var.py file that has the following info:
 
+apikey = "LONG STRING"
+#Org ID For known org
+org = "ORGIDNUMBER"
+
+
+
+
+
+
+
+
+########  Ignore the rest  #########
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
 ```markdown
