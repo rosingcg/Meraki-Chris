@@ -1,2 +1,6 @@
 
 vars.py
+*.csv
+*.pyc
+*.pyc
+*.pyc

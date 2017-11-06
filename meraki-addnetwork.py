@@ -6,52 +6,63 @@ import requests
 import re
 import pandas as pd
 from tabulate import tabulate
+import ftpadp
 
 class bcolors:
-    QUESTION = '\033[95m'
-    ACTION = '\033[94m'
-    VARIABLE = '\033[92m'
-    RESULT = '\033[93m'
-    FAIL = '\033[91m'
+    #cyan
+    HEADER = '\033[32m'
+    #purple
+    QUESTION = '\033[35m'
+    #lightblue
+    ACTION = '\033[34m'
+    #blue
+    VARIABLE = '\033[94m'
+    #yellow
+    RESULT = '\033[33m'
+    #red
+    FAIL = '\033[31m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-    HEADER = '\033[95m'
+
 
 # Create a network
 # https://dashboard.meraki.com/api_docs#create-a-network
 #def addnetwork(apikey, orgid, name, nettype, tags, tz, suppressprint=False):
 
-#Vars Verification
-def __validip(ip):
-    """
-
-    Args:
-        ip: IP Address to be tested
-
-    Returns: None, raises ValueError on invalid formating for IP address
-
-    """
-    try:
-        ip_address(ip)
-    except ValueError:
-        raise ValueError('Invalid IP Address')
-
-
 
 #Local Vars
 
-# while True adpcode = input('What is the sites ADP code? ')
 
-#     while not re.match("^[A-Z][A-Z][0-9][0-9][0-9]", adpcode):
-#         print ("Error! Make sure your ADP Code contains 2 letters, then 3 numbers")
-#     else:
-#         print("ADP Code is "+ adpcode)
+#Download adp_locations.csv from FTP Server
+print(bcolors.HEADER,'Downloading latest ADP File for Future Searches')
+
+ftpadp
+
 print(bcolors.HEADER, "Let's set up your Meraki Network.  You will define the ADP Code and Site Friendly name.  The Network Type, Timezone, and Tags are already configured for you.", bcolors.ENDC)
-adpcode = input(bcolors.QUESTION + 'What is the sites ADP code? ' + bcolors.ENDC )
-friendlyname = input(bcolors.QUESTION + 'What is the friendly name for the site? ' + bcolors.ENDC )
+#ADP Code with REGEX Verification
+while True:
+    adpcode = input(bcolors.QUESTION + 'What is the sites ADP code? ' + bcolors.ENDC)
 
-#limit to 32 characters, only _ allowed
+    while not re.match("^[A-Z][A-Z][0-9][0-9][0-9]", adpcode):
+        print (bcolors.FAIL,"Error! Make sure your ADP Code contains 2 letters, then 3 numbers", bcolors.ENDC)
+        adpcode = input(bcolors.QUESTION + 'What is the sites ADP code? ' + bcolors.ENDC)
+    else:
+        print("ADP Code is "+ adpcode)
+        break
+
+
+#Friendly Name with REGEX
+while True:
+    friendlyname = input(bcolors.QUESTION + 'What is the friendly name for the site? ' + bcolors.ENDC )
+
+    while not re.match("^[A-Za-z_]{0,25}$", friendlyname):
+        print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
+        friendlyname = input('What is the friendly name for the site? ')
+    else:
+        print("ADP Code is "+ friendlyname)
+        break
+
 networkname = adpcode+"-"+friendlyname
 
 #API Vars
@@ -62,7 +73,7 @@ tz = 'America/Chicago'
 #add tags for ADP Code, State, and City.
 tags = adpcode + ' APITEST'
 
-#Script for what Organization?
+#Script to prompt for what Organization?
 
 #Prompt for settings
 
@@ -72,8 +83,7 @@ print(bcolors.ACTION + 'Creating network with the name of ',bcolors.VARIABLE + n
 #Confirm and submit
 
 
-newnetwork = mer.addnetwork(apikey,orgid,networkname,nettype,tags,tz,suppressprint=True) 
-pprint(newnetwork) 
+newnetwork = mer.addnetwork(apikey,orgid,networkname,nettype,tags,tz,suppressprint=True)
 
 # Get your id/name and print.
 newnetworkid = newnetwork.get('id')
@@ -93,10 +103,10 @@ print(bcolors.RESULT,'Network Type is now',bcolors.VARIABLE, newnetworktype, bco
 # https://dashboard.meraki.com/api_docs#bind-a-network-to-a-template
 #newnetwork = mer.bindtotemplate(apikey, networkid, templateid, autobind=False, suppressprint=False)
 
-print(bcolors.HEADER, "Now that the network is set up, let's bind it to a template. For now, just use the only template available.  You will need to use the field that starts with L_", bcolors.ENDC)
+print(bcolors.HEADER, "\nNow that the network is set up, let's bind it to a template. For now, just use the only template available.  You will need to use the field that starts with L_", bcolors.ENDC)
 #List Templates
 templatelist = mer.gettemplates(apikey, orgid, suppressprint=False)
-pprint(templatelist)
+print(bcolors.RESULT, templatelist, bcolors.ENDC)
 
 #Choose Template to be Assinged
 assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC )
@@ -106,30 +116,45 @@ print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.EN
 bindtempate = mer.bindtotemplate(apikey, newnetworkid, assignedtemplateid, autobind=True, suppressprint=False)
 
 #Print result from API
-pprint(bcolors.RESULT, bindtempate, bcolors.ENDC)
+print(bcolors.RESULT, bindtempate, bcolors.ENDC)
 
-#Add Swich to the Network
+#Add Swich to the Network, Verify Serialnumber with Regex
 print(bcolors.ACTION,'Now it is time to add a swtich to the network', bcolors.ENDC)
-switchsn = input(bcolors.QUESTION, 'What is the Switch Serial Number (QNXX-XXXX-XXXX) (Q2EX-X5WR-SQAU for testing)?', bcolors.ENDC)
 
+while True:
+    switchsn = input(bcolors.QUESTION + 'What is the Switch Serial Number (QNXX-XXXX-XXXX) (Q2EX-X5WR-SQAU for testing)? ' + bcolors.ENDC)
+
+    while not re.match("[Q][2][A-Z0-9][A-Z0-9]-[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]-[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]", switchsn):
+        print (bcolors.FAIL,"Invalid Format for Serial Number.  Please try again.",bcolors.FAIL)
+        switchsn = input(bcolors.QUESTION + 'What is the Switch Serial Number (QNXX-XXXX-XXXX) (Q2EX-X5WR-SQAU for testing)? ' + bcolors.ENDC)
+    else:
+        print("Switch Serial number is "+ switchsn)
+        break
 
 # Claim a device into a network
 # https://dashboard.meraki.com/api_docs#claim-a-device-into-a-network
 #def adddevtonet(apikey, networkid, serial, suppressprint=False):
-addswitch = mer.adddevtonet(apikey, networkid, swtichsn, suppressprint=False)
-pprint(bcolors.RESULT, addswtich, bcolors.ENDC)
+addswitch = mer.adddevtonet(apikey, newnetworkid, switchsn, suppressprint=False)
+print(bcolors.RESULT, addswitch, bcolors.ENDC)
 
 
-#add AP to the network
+#Add AP to the network, Verify Serial number with Regex
 print(bcolors.ACTION,'Now it is time to add an Access Point to the network', bcolors.ENDC)
-apsn = input(bcolors.QUESTION, 'What is the Switch Serial Number (QNXX-XXXX-XXXX) (Q2KD-3PUQ-K9KX for testing)?', bcolors.ENDC)
+while True:
+    apsn = input(bcolors.QUESTION + ' What is the Access Point Serial Number (QNXX-XXXX-XXXX) (Q2KD-3PUQ-K9KX for testing)? ' + bcolors.ENDC)
 
+    while not re.match("[Q][2][A-Z0-9][A-Z0-9]-[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]-[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]", apsn):
+        print ("Error! Make sure your ADP Code contains 2 letters, then 3 numbers")
+        switchsn = input(bcolors.QUESTION + ' What is the Access Point Serial Number (QNXX-XXXX-XXXX) (Q2KD-3PUQ-K9KXfor testing)? ' + bcolors.ENDC)
+    else:
+        print("Access Point Serial number is "+ apsn)
+        break
 
 # Claim a device into a network
 # https://dashboard.meraki.com/api_docs#claim-a-device-into-a-network
 #def adddevtonet(apikey, networkid, serial, suppressprint=False):
-addswitch = mer.adddevtonet(apikey, networkid, apsn, suppressprint=False)
-pprint(bcolors.RESULT, addswtich, bcolors.ENDC)
+addap = mer.adddevtonet(apikey, newnetworkid, apsn, suppressprint=False)
+print(bcolors.RESULT, addap, bcolors.ENDC)
 
 
 #Configure Switch and AP
@@ -139,20 +164,82 @@ pprint(bcolors.RESULT, addswtich, bcolors.ENDC)
 #def updatedevice(apikey, networkid, serial, name=None, tags=None, lat=None, lng=None, address=None, move=None, suppressprint=False):
 
 print(bcolors.HEADER,'Now we need to give it a name and Street Address', bcolors.ENDC)
+
 addressstreet = input(bcolors.QUESTION + 'What is the Street Address?  (Do not include Suite number): ' + bcolors.ENDC)
-addresscity = input(bcolors.QUESTION + 'What City? : '+ bcolors.ENDC)
-addressstate = input(bcolors.QUESTION + 'What State (2 Letters, Capitalized): ' + bcolors.ENDC)
-addresszip = input(bcolors.QUESTION +'Zip Code? : '+ bcolors.ENDC)
+
+
+while True:
+    addresscity = input(bcolors.QUESTION + 'What City? ' + bcolors.ENDC )
+
+    while not re.match("^[A-Za-z_]{0,25}$", addresscity):
+        print (bcolors.FAIL,"Error! Invalid City Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.", bcolors.ENDC)
+        addresscity = input(bcolors.QUESTION + 'What City? ' + bcolors.ENDC )
+    else:
+        break
+
+while True:
+    addressstate = input(bcolors.QUESTION + 'What State (2 Letters, Capitalized): ' + bcolors.ENDC)
+
+    while not re.match("[A-Z]{2}", addressstate):
+        print (bcolors.FAIL,"Invalid Format",bcolors.ENDC)
+        switchsn = input(bcolors.QUESTION + 'What State (2 Letters, Capitalized): ' + bcolors.ENDC)
+    else:
+        break
+
+
+while True:
+    addresszip = input(bcolors.QUESTION + 'Zip Code? ' + bcolors.ENDC)
+
+    while not re.match("[0-9]{5}", addresszip):
+        print (bcolors.FAIL,"Invalid Format, Zip code should contain only 5 numbers",bcolors.ENDC)
+        addresszip = input(bcolors.QUESTION + 'Zip Code? ' + bcolors.ENDC)
+    else:
+        break
+
 fulladdress = addressstreet + "\n" + addresscity + ', ' + addressstate + ' ' +addresszip
-print(bcolors.ACTION, 'This is the address that will be used:\n', bcolors.VARIABLE fulladdress, bcolors.ENDC)
+print(bcolors.ACTION,'This is the address that will be used:\n', bcolors.VARIABLE, fulladdress, bcolors.ENDC,sep='')
 
 #Configure Switch
-configswitch = mer.updatedevice(apikey, networkid, switchsn, name=newnetworkname+'AS01', lat=None, lng=None, address=fulladdress, move=True, suppressprint=FALSE)
+configswitch = mer.updatedevice(apikey, newnetworkid, switchsn, name=newnetworkname+'-AS01', lat=None, lng=None, address=fulladdress, move=True, suppressprint=False)
+# Get your id/name and print.
+newswitchlanIp = configswitch.get('lanIp')
+newswitchserial = configswitch.get('serial')
+newswitchmac = configswitch.get('mac')
+newswitchlat = configswitch.get('lat')
+newswitchlng = configswitch.get('lng')
+newswitchaddress = configswitch.get('address')
+newswitchname = configswitch.get('name')
+newswitchmodel = configswitch.get('model')
+newswitchnetworkid = configswitch.get('networkId')
 
 #Configure AP
-configap = mer.updatedevice(apikey, networkid, apsn, name=newnetworkname+'AS01', lat=None, lng=None, address=fulladdress, move=True, suppressprint=FALSE)
+configap = mer.updatedevice(apikey, newnetworkid, apsn, name=newnetworkname+'-AP01', lat=None, lng=None, address=fulladdress, move=True, suppressprint=False)
+
+newaplanIp = configap.get('lanIp')
+newapserial = configap.get('serial')
+newapmac = configap.get('mac')
+newaplat = configap.get('lat')
+newaplng = configap.get('lng')
+newapaddress = configap.get('address')
+newapname = configap.get('name')
+newapmodel = configap.get('model')
+newapnetworkid = configap.get('networkId')
 
 #Result Printout
-print(bcolors.RESULT, configswitch, bcolors.ENDC)
-print(bcolors.RESULT, configAP, bcolors.ENDC)
+
+print(bcolors.HEADER,'Information about the switch added\n' )
+print(bcolors.RESULT,'The switch added is a ',bcolors.VARIABLE, newswitchmodel, bcolors.ENDC)
+print(bcolors.RESULT,'Switch LAN IP address is:\t',bcolors.VARIABLE, newswitchlanIp, bcolors.ENDC)
+print(bcolors.RESULT,'The serial number is ',bcolors.VARIABLE, newswitchserial, bcolors.RESULT, ' with a MAC address of ',bcolors.VARIABLE,newswitchmac,bcolors.ENDC)
+print(bcolors.RESULT,'Its location Lat/Long is ',bcolors.VARIABLE, newswitchlat, bcolors.RESULT,' and ',bcolors.VARIABLE, newswitchlng, bcolors.ENDC)
+print(bcolors.RESULT,'The sites address is\n',bcolors.VARIABLE, newswitchaddress, bcolors.ENDC)
+
+
+print(bcolors.HEADER,'Information about the access point added\n' )
+print(bcolors.RESULT,'The access point added is a ',bcolors.VARIABLE, newapmodel, bcolors.ENDC)
+print(bcolors.RESULT,'Access point LAN IP address is:\t',bcolors.VARIABLE, newaplanIp, bcolors.ENDC)
+print(bcolors.RESULT,'The serial number is ',bcolors.VARIABLE, newapserial, bcolors.RESULT, ' with a MAC address of ',bcolors.VARIABLE,newapmac,bcolors.ENDC)
+print(bcolors.RESULT,'Its location Lat/Long is ',bcolors.VARIABLE, newaplat, bcolors.RESULT,' and ',bcolors.VARIABLE, newaplng, bcolors.ENDC)
+print(bcolors.RESULT,'The sites address is\n',bcolors.VARIABLE, newapaddress, bcolors.ENDC)
+
 

@@ -1,4 +1,4 @@
-print('\033[92m Creating network with the name of \n \033[0m')
+print('\033[92mCreating network with the name of\033[0m')
 print('Back to normal')
 
 
@@ -43,20 +43,21 @@ class colors:
     invisible='\033[08m'
     class fg:
         black='\033[30m'
-        red='\033[31m'
-        green='\033[32m'
-        orange='\033[33m'
-        blue='\033[34m'
-        purple='\033[35m'
-        cyan='\033[36m'
         lightgrey='\033[37m'
         darkgrey='\033[90m'
+        red='\033[31m'
         lightred='\033[91m'
+        green='\033[32m'
         lightgreen='\033[92m'
-        yellow='\033[93m'
+        blue='\033[34m'
         lightblue='\033[94m'
-        pink='\033[95m'
+        purple='\033[35m'
+        cyan='\033[36m'
         lightcyan='\033[96m'
+        orange='\033[33m'
+        yellow='\033[93m'
+        pink='\033[95m'
+
     class bg:
         black='\033[40m'
         red='\033[41m'
@@ -66,3 +67,18 @@ class colors:
         purple='\033[45m'
         cyan='\033[46m'
         lightgrey='\033[47m'
+print(colors.fg.black,'Black 30',colors.reset)
+print(colors.fg.lightgrey,'lightgrey 37',colors.reset)
+print(colors.fg.darkgrey,'darkgrey 90',colors.reset)
+print(colors.fg.red,'red 31',colors.reset)
+print(colors.fg.lightred,'lightred 91',colors.reset)
+print(colors.fg.green,'green 32',colors.reset)
+print(colors.fg.lightgreen,'lightgreen 92',colors.reset)
+print(colors.fg.blue,'blue 34',colors.reset)
+print(colors.fg.lightblue,'lightblue 94',colors.reset)
+print(colors.fg.purple,'purple 35',colors.reset)
+print(colors.fg.cyan,'cyan 36',colors.reset)
+print(colors.fg.lightcyan,'lightcyan 96',colors.reset)
+print(colors.fg.orange,'orange 33',colors.reset)
+print(colors.fg.yellow,'yellow 93',colors.reset)
+print(colors.fg.pink,'pink 95',colors.reset)
