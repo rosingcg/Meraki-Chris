@@ -1,5 +1,5 @@
 from meraki import meraki as mer
-from vars import apikey, orgid
+from vars import apikey, org
 from pprint import pprint
 import json
 import requests
@@ -83,7 +83,7 @@ print(bcolors.ACTION + 'Creating network with the name of ',bcolors.VARIABLE + n
 #Confirm and submit
 
 
-newnetwork = mer.addnetwork(apikey,orgid,networkname,nettype,tags,tz,suppressprint=True)
+newnetwork = mer.addnetwork(apikey,org,networkname,nettype,tags,tz,suppressprint=True)
 
 # Get your id/name and print.
 newnetworkid = newnetwork.get('id')
@@ -105,7 +105,7 @@ print(bcolors.RESULT,'Network Type is now',bcolors.VARIABLE, newnetworktype, bco
 
 print(bcolors.HEADER, "\nNow that the network is set up, let's bind it to a template. For now, just use the only template available.  You will need to use the field that starts with L_", bcolors.ENDC)
 #List Templates
-templatelist = mer.gettemplates(apikey, orgid, suppressprint=False)
+templatelist = mer.gettemplates(apikey, org, suppressprint=False)
 print(bcolors.RESULT, templatelist, bcolors.ENDC)
 
 #Choose Template to be Assinged
