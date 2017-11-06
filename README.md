@@ -6,9 +6,9 @@ I am fairly new to scripting and APIs.  We are about to deploy Meraki Switches a
 
 Create a var.py file that has the following info:
 
-apikey = "LONG STRING"
-#Org ID For known org
-org = "ORGIDNUMBER"
+apikey = "LONG STRING"\n
+#Org ID For known org\n
+org = "ORGIDNUMBER"\n
 
 
 

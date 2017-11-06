@@ -109,7 +109,7 @@ templatelist = mer.gettemplates(apikey, orgid, suppressprint=False)
 print(bcolors.RESULT, templatelist, bcolors.ENDC)
 
 #Choose Template to be Assinged
-assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC )
+assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC)
 
 #Notifiy of action taken and take it
 print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
