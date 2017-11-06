@@ -1,4 +1,4 @@
-
+.gitignore*
 vars.py
 *.csv
 *.pyc
