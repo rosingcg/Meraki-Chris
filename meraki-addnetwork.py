@@ -58,7 +58,7 @@ while True:
 
     while not re.match("^[A-Za-z_]{0,25}$", friendlyname):
         print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
-        friendlyname = input((bcolors.QUESTION + 'What is the friendly name for the site? '+ bcolors.ENDC )
+        friendlyname = input(bcolors.QUESTION + 'What is the friendly name for the site? '+ bcolors.ENDC )
     else:
         print("ADP Code is "+ friendlyname)
         break
@@ -196,7 +196,7 @@ while True:
     else:
         break
 
-fulladdress = addressstreet + "\n" + addresscity + ', ' + addressstate + ' ' +addresszip
+fulladdress = addressstreet + ', ' + addresscity + ', ' + addressstate + ' ' +addresszip
 print(bcolors.ACTION,'This is the address that will be used:\n', bcolors.VARIABLE, fulladdress, bcolors.ENDC,sep='')
 
 #Configure Switch
