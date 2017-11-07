@@ -26,6 +26,27 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+def explore_next(apikey,apidata,headers,selector="none",column_name="none",justPrint=False):
+    #print(len(apidata))
+    if '[' in str(apidata): #quick check if there are multiple 'rows' in json, starts with '[{data},{data}]'
+        df = pd.DataFrame(apidata)
+    else:
+        df = pd.DataFrame(apidata, index=[0]) #pandas is weird for JSON w/ only 1 'row' : '{data}'
+    df.index.names = ['Selection']
+    try:
+        df = df[headers]
+    except:
+        "Can't set headers, showing all"
+    print (tabulate(df, headers='keys',tablefmt="fancy_grid"))
+
+    if not justPrint:
+        user_input = input("Select the row number which contains the "+selector +" you wish to configure  :  ")
+        #print("Org ID = "+ str(df.iloc[1]['id']))
+        data = str(df.iloc[int(user_input)][column_name])
+        return data
+    else:
+        return "nada"
+
 # Create a network
 # https://dashboard.meraki.com/api_docs#create-a-network
 #def addnetwork(apikey, orgid, name, nettype, tags, tz, suppressprint=False):
@@ -35,9 +56,22 @@ class bcolors:
 
 
 #Download adp_locations.csv from FTP Server
-print(bcolors.HEADER,'Downloading latest ADP File for Future Searches')
 
-ftpget = ftpadp.getadpcsv()
+
+adpupdate = input(bcolors.QUESTION + 'Do you want to refrest the ADP list? [yes/no]' + bcolors.ENDC)
+
+if adpupdate == 'yes':
+    ftpget = ftpadp.getadpcsv()
+    
+elif adpupdate != 'yes':
+    print(bcolors.ACTION, 'ADP file will', bcolors.FAIL, ' NOT ', bcolors.ACTION, 'be downloaded.', bcolors.ENDC)
+
+
+#Select Orgainization from Defined Function expore_next
+apidata = mer.myorgaccess(apikey,suppressprint=True)
+# id|name|samlConsumerUrl|samlConsumerUrls
+selectedOrg = explore_next(apikey,apidata,['id','name'],"Organization","id")
+
 
 print(bcolors.HEADER, "Let's set up your Meraki Network.  You will define the ADP Code and Site Friendly name.  The Network Type, Timezone, and Tags are already configured for you.", bcolors.ENDC)
 #ADP Code with REGEX Verification
@@ -73,7 +107,6 @@ tz = 'America/Chicago'
 #add tags for ADP Code, State, and City.
 tags = adpcode + ' APITEST'
 
-#Script to prompt for what Organization?
 
 #Prompt for settings
 
@@ -83,7 +116,7 @@ print(bcolors.ACTION + 'Creating network with the name of ',bcolors.VARIABLE + n
 #Confirm and submit
 
 
-newnetwork = mer.addnetwork(apikey,org,networkname,nettype,tags,tz,suppressprint=True)
+newnetwork = mer.addnetwork(apikey,selectedOrg,networkname,nettype,tags,tz,suppressprint=True)
 
 # Get your id/name and print.
 newnetworkid = newnetwork.get('id')
@@ -105,15 +138,18 @@ print(bcolors.RESULT,'Network Type is now',bcolors.VARIABLE, newnetworktype, bco
 
 print(bcolors.HEADER, "\nNow that the network is set up, let's bind it to a template. For now, just use the only template available.  You will need to use the field that starts with L_", bcolors.ENDC)
 #List Templates
-templatelist = mer.gettemplates(apikey, org, suppressprint=False)
+templatelist = mer.gettemplates(apikey, selectedOrg, suppressprint=False)
 print(bcolors.RESULT, templatelist, bcolors.ENDC)
 
+selectedTemplate = explore_next(apikey,templatelist,['id','name'],"Template","id")
+
+
 #Choose Template to be Assinged
-assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC)
+#assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC)
 
 #Notifiy of action taken and take it
 print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
-bindtempate = mer.bindtotemplate(apikey, newnetworkid, assignedtemplateid, autobind=True, suppressprint=False)
+bindtempate = mer.bindtotemplate(apikey, newnetworkid, selectedTemplate, autobind=True, suppressprint=False)
 
 #Print result from API
 print(bcolors.RESULT, bindtempate, bcolors.ENDC)
