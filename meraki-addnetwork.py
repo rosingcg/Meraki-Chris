@@ -139,7 +139,6 @@ print(bcolors.RESULT,'Network Type is now',bcolors.VARIABLE, newnetworktype, bco
 print(bcolors.HEADER, "\nNow that the network is set up, let's bind it to a template. For now, just use the only template available.  You will need to use the field that starts with L_", bcolors.ENDC)
 #List Templates
 templatelist = mer.gettemplates(apikey, selectedOrg, suppressprint=False)
-print(bcolors.RESULT, templatelist, bcolors.ENDC)
 
 selectedTemplate = explore_next(apikey,templatelist,['id','name'],"Template","id")
 
@@ -149,7 +148,7 @@ selectedTemplate = explore_next(apikey,templatelist,['id','name'],"Template","id
 
 #Notifiy of action taken and take it
 print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
-bindtempate = mer.bindtotemplate(apikey, newnetworkid, selectedTemplate, autobind=True, suppressprint=False)
+bindtempate = mer.bindtotemplate(apikey, newnetworkid, selectedTemplate, autobind=False, suppressprint=False)
 
 #Print result from API
 print(bcolors.RESULT, bindtempate, bcolors.ENDC)
