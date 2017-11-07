@@ -37,7 +37,7 @@ class bcolors:
 #Download adp_locations.csv from FTP Server
 print(bcolors.HEADER,'Downloading latest ADP File for Future Searches')
 
-ftpadp
+ftpget = ftpadp.getadpcsv()
 
 print(bcolors.HEADER, "Let's set up your Meraki Network.  You will define the ADP Code and Site Friendly name.  The Network Type, Timezone, and Tags are already configured for you.", bcolors.ENDC)
 #ADP Code with REGEX Verification

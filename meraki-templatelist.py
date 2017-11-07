@@ -1,5 +1,5 @@
 from meraki import meraki as mer
-from vars import apikey, orgid
+from vars import apikey, org
 from pprint import pprint
 import json
 import requests
@@ -8,6 +8,6 @@ import pandas as pd
 from tabulate import tabulate
 
 
-templatelist = mer.gettemplates(apikey, orgid, suppressprint=False)
+templatelist = mer.gettemplates(apikey, org, suppressprint=False)
 pprint(templatelist)
 
