@@ -40,7 +40,7 @@ def explore_next(apikey,apidata,headers,selector="none",column_name="none",justP
     print (tabulate(df, headers='keys',tablefmt="fancy_grid"))
 
     if not justPrint:
-        user_input = input("Select the row number which contains the "+selector +" you wish to configure  :  ")
+        user_input = input(bcolors.QUESTION + "Select the row number which contains the "+selector +" you wish to configure  :  " + bcolors.ENDC)
         #print("Org ID = "+ str(df.iloc[1]['id']))
         data = str(df.iloc[int(user_input)][column_name])
         return data
@@ -136,9 +136,9 @@ print(bcolors.RESULT,'Network Type is now',bcolors.VARIABLE, newnetworktype, bco
 # https://dashboard.meraki.com/api_docs#bind-a-network-to-a-template
 #newnetwork = mer.bindtotemplate(apikey, networkid, templateid, autobind=False, suppressprint=False)
 
-print(bcolors.HEADER, "\nNow that the network is set up, let's bind it to a template. For now, just use the only template available.  You will need to use the field that starts with L_", bcolors.ENDC)
+print(bcolors.HEADER, "\nNow that the network is set up, let's bind it to a template. Select the template you wish to use.", bcolors.ENDC)
 #List Templates
-templatelist = mer.gettemplates(apikey, selectedOrg, suppressprint=False)
+templatelist = mer.gettemplates(apikey, selectedOrg, suppressprint=True)
 
 selectedTemplate = explore_next(apikey,templatelist,['id','name'],"Template","id")
 
