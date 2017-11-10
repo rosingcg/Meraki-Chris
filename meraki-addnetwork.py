@@ -7,6 +7,7 @@ import re
 import pandas as pd
 from tabulate import tabulate
 import ftpadp
+import time
 
 class bcolors:
     #cyan
@@ -145,6 +146,11 @@ selectedTemplate = explore_next(apikey,templatelist,['id','name'],"Template","id
 
 #Choose Template to be Assinged
 #assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC)
+
+time.sleep(40) #allow network to be fully popluated in dashboard
+apidata = mer.getnetworkdetail(apikey,newnetworkid,suppressprint=True)
+dummy = explore_next(apikey,apidata,['name','id','tags','timeZone','type'],justPrint=True) #print out network detail for troubleshooting, will be empty if not enough time passes
+print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
 
 #Notifiy of action taken and take it
 print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
