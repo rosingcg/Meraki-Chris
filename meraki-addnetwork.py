@@ -34,6 +34,8 @@ def explore_next(apikey,apidata,headers,selector="none",column_name="none",justP
     else:
         df = pd.DataFrame(apidata, index=[0]) #pandas is weird for JSON w/ only 1 'row' : '{data}'
     df.index.names = ['Selection']
+    if df.empty:
+        return "empty"    
     try:
         df = df[headers]
     except:
@@ -147,9 +149,16 @@ selectedTemplate = explore_next(apikey,templatelist,['id','name'],"Template","id
 #Choose Template to be Assinged
 #assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC)
 
-time.sleep(40) #allow network to be fully popluated in dashboard
-apidata = mer.getnetworkdetail(apikey,newnetworkid,suppressprint=True)
-dummy = explore_next(apikey,apidata,['name','id','tags','timeZone','type'],justPrint=True) #print out network detail for troubleshooting, will be empty if not enough time passes
+while True:
+    apidata = mer.getnetworkdetail(apikey,newnetworkid,suppressprint=True)
+    result = explore_next(apikey,apidata,['name','id','tags','timeZone','type'],justPrint=True)
+    if result != "empty":
+        break
+    print("Initializing Network: adding 5 seconds")
+    time.sleep(5)
+
+
+
 print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
 
 #Notifiy of action taken and take it
