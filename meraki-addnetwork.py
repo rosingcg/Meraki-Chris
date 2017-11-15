@@ -7,6 +7,7 @@ import re
 import pandas as pd
 from tabulate import tabulate
 import ftpadp
+import time
 
 class bcolors:
     #cyan
@@ -33,6 +34,8 @@ def explore_next(apikey,apidata,headers,selector="none",column_name="none",justP
     else:
         df = pd.DataFrame(apidata, index=[0]) #pandas is weird for JSON w/ only 1 'row' : '{data}'
     df.index.names = ['Selection']
+    if df.empty:
+        return "empty"    
     try:
         df = df[headers]
     except:
@@ -145,6 +148,18 @@ selectedTemplate = explore_next(apikey,templatelist,['id','name'],"Template","id
 
 #Choose Template to be Assinged
 #assignedtemplateid = input(bcolors.QUESTION + 'What is your TemplateID? ' + bcolors.ENDC)
+
+while True:
+    apidata = mer.getnetworkdetail(apikey,newnetworkid,suppressprint=True)
+    result = explore_next(apikey,apidata,['name','id','tags','timeZone','type'],justPrint=True)
+    if result != "empty":
+        break
+    print("Initializing Network: adding 5 seconds")
+    time.sleep(5)
+
+
+
+print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
 
 #Notifiy of action taken and take it
 print(bcolors.ACTION,'We will now autobind to the Standard Template', bcolors.ENDC)
