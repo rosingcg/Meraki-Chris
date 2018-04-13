@@ -4,3 +4,6 @@ vars.py
 *.pyc
 *.pyc
 *.pyc
+parmeters.ini
+*.csv
+marshal*.txt
