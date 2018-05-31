@@ -1,4 +1,4 @@
-
+from functions import functions
 
 #start Menu
 #Begining Menu to choose between Running Reports and and Provisioning
@@ -16,15 +16,16 @@ while main_loop:
 	print_menu()
 	#Ask for selection and change it to an Integer for proper choice selection
 	#choice is a variable at this point, since it is the main menu, do I call it main_choice?
-	choice = input(bcolors.QUESTION + "Please Enter Your Selection: "+ bcolors.ENDC)
+	choice = input(functions.bcolors.QUESTION + "Please Enter Your Selection: "+ functions.bcolors.ENDC)
 	choice = int(choice)
 	if choice==1:
 		try:
 			#Run a secondary menu to choose between Specefic Reports
 			def report_print_menu():
 				print (30 * "-" , "Reporting menu" , 30 * "-")
-				print ("11. Meraki Inventory Report")
+				print ("11. Meraki Organization Inventory Report")
 				print ("12. Meraki Marshall Report")
+				print ("13. Meraki Client Search in all Networks")
 				print ("100. Exit")
 			report_loop = True
 			while report_loop:
