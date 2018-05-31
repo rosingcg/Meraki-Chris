@@ -1,13 +1,4 @@
-class bcolors:
-    QUESTION = '\033[95m'
-    ACTION = '\033[94m'
-    VARIABLE = '\033[92m'
-    RESULT = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    HEADER = '\033[95m'
+
 
 #start Menu
 #Begining Menu to choose between Running Reports and and Provisioning
@@ -26,7 +17,7 @@ while main_loop:
 	#Ask for selection and change it to an Integer for proper choice selection
 	#choice is a variable at this point, since it is the main menu, do I call it main_choice?
 	choice = input(bcolors.QUESTION + "Please Enter Your Selection: "+ bcolors.ENDC)
-	choice=int(choice)
+	choice = int(choice)
 	if choice==1:
 		try:
 			#Run a secondary menu to choose between Specefic Reports
@@ -35,7 +26,7 @@ while main_loop:
 				print ("11. Meraki Inventory Report")
 				print ("12. Meraki Marshall Report")
 				print ("100. Exit")
-			report_loop=True
+			report_loop = True
 			while report_loop:
 					report_print_menu
 					report_choice = input("Please choose your report")
