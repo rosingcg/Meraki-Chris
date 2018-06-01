@@ -1,4 +1,3 @@
-from functions import functions
 
 #start Menu
 #Begining Menu to choose between Running Reports and and Provisioning
@@ -16,9 +15,8 @@ while main_loop:
 	print_menu()
 	#Ask for selection and change it to an Integer for proper choice selection
 	#choice is a variable at this point, since it is the main menu, do I call it main_choice?
-	choice = input(functions.bcolors.QUESTION + "Please Enter Your Selection: "+ functions.bcolors.ENDC)
-	choice = int(choice)
-	if choice==1:
+	main_choice = int(input("Please Enter Your Selection: "))
+	if main_choice==1:
 		try:
 			#Run a secondary menu to choose between Specefic Reports
 			def report_print_menu():
@@ -29,36 +27,34 @@ while main_loop:
 				print ("100. Exit")
 			report_loop = True
 			while report_loop:
-					report_print_menu
-					report_choice = input("Please choose your report")
-					report_choice = int(report_choice)
-					if report_choice==11
-					#Choice 11 is for Meraki Inventory Report.  For now, just print the text Inventory Report
-					#Once that report is ran, return back to Report Menu
-						try:
-							print("Inventory should run")
-						except:
-							pass
+				report_print_menu
+				report_choice = int(input("Please choose your report"))
+				if report_choice == 11:
+				#Choice 11 is for Meraki Inventory Report.  For now, just print the text Inventory Report
+				#Once that report is ran, return back to Report Menu
+					try:
+						print("Inventory should run")
+					except:
+						pass
 					
-					if report_choice==12
+				elif report_choice==12:
 					#Choice 12 is for Meraki Marshal Report.  For now, just print the text Marshal Report
 					#Once that report is ran, return back to Report Menu
-						try:
-							print("Marshal should run")
-						except:
-							pass
-					elif report_choice==100:
+					try:
+						print("Marshal should run")
+					except:
+						pass
+				elif report_choice==100:
 						#break loop and return to main menu
 						report_loop=False
-						break
-							else:
-							input("Press any key to continue...")
+				else:
+					input("Press any key to continue...")
+					break
 
+		except:
+			pass
 
-			except:
-				pass
-
-	elif choice==2:
+	elif main_choice==2:
 		try:
 			#run provision.py
 			#subprocess.Popen("provision.py")
