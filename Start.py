@@ -1,5 +1,5 @@
 from vars import apikey, orgid
-
+import ftpadp
 
 
 #start Menu
@@ -77,20 +77,26 @@ while main_loop:
 				#Once that report is ran, return back to Report Menu
 					try:
 						print("Provision Meraki Network")
+						print("Updating ADP List")
+						ftpadp.getadpcsv()
 						print("Provision Meraki Network is now complete.  Returning to Provisioning menu.")
 					except:
 						pass
-					
-				
+						
 				elif provision_choice==100:
+					try:
 						#break loop and return to main menu
 						provision_loop=False
+					except:
+						pass
 				else:
-					input("Press any key to continue...")
-					break
-
-		except:
-			pass
+					try:
+						input("Press any key to continue...")
+						#Do I need a break here?  Should I set the loop to false now?  But i want it to return to asking provisioning menu questions
+						provision_loop=False
+						break
+					except:
+						pass
 		except:
 			pass
 	elif main_choice==100:
