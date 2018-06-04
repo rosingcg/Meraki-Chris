@@ -3,6 +3,7 @@ from vars import ftpusername, ftppassword
 from pprint import pprint
 import ftplib
 import pandas as pd
+#from functions import bcolors
 
 class bcolors:
     QUESTION = '\033[95m'
@@ -29,5 +30,4 @@ def getadpcsv():
     except:
         print(bcolors.FAIL, 'Error', bcolors.ENDC)
         return 'Error'
-    
 

@@ -1,6 +1,7 @@
 from vars import apikey, orgid
 import ftpadp
-
+import adpcsvsearch
+import provision
 
 #start Menu
 #Begining Menu to choose between Running Reports and and Provisioning
@@ -16,9 +17,14 @@ def report_print_menu():
 	print ("13. Meraki Client Search in all Networks")
 	print ("100. Exit")
 def provision_print_menu():
-	print (30 * "-" , "Reporting menu" , 30 * "-")
-	print ("21. Create Meraki Network")
+	print (30 * "-" , "Provisioning" , 30 * "-")
+	print ("21. Fully Create Meraki Network")
 	print ("100. Exit")
+def network_lookup_menu():
+	print ("1. Update ADP Code List")
+	print ("2. Search ADP Codes")
+	print ("3. Manual entry")
+	print ("0. Return to Meraki Provisioning")
 
 #Start Options Loop: info accuracy is important I have not written error handlers yet
 #Loop options to accept Running Reports or Provision Systems
@@ -71,18 +77,44 @@ while main_loop:
 			while provision_loop:
 				#run Function to display the Provision Menu
 				provision_print_menu()
-				provision_choice = int(input("Please choose your report: "))
-				if provision_choice == 21:
-				#Choice 21 is for Provisioning Meraki Netowrks.  For now, just print the text Provision Meraki Network
-				#Once that report is ran, return back to Report Menu
+				provision_choice = int(input("Please Choose Provisioning Actions: "))
+				if provision_choice==21:
 					try:
-						print("Provision Meraki Network")
-						print("Updating ADP List")
-						ftpadp.getadpcsv()
+						print("We will now begin creating the Meraki Network, Add devices, Apply templates, etc...")		
+						#first, we need to get location information. 
+						location_loop = True
+						while location_loop:
+							network_lookup_menu()
+							location_choice = int(input("Please choose site infomration collection method:"))
+							if location_choice == 1:
+								try:
+									ftpadp.getadpcsv()
+								except:
+									pass
+							elif location_choice == 2:
+								try:
+									adpcsvsearch.adpsearch()
+								except:
+									pass
+							elif location_choice == 3:
+								try:
+									provision.manual_network_location()
+								except:
+									pass
+							elif location_choice == 0:
+								try:
+									break
+								except:
+									pass
+							else:
+								#invalid entry should repeat the Merkai Provision Menu
+								input("Invalid entry.  Press any key to continue...")
+					#Continue to Meraki network Provisioning
+
+
 						print("Provision Meraki Network is now complete.  Returning to Provisioning menu.")
 					except:
 						pass
-						
 				elif provision_choice==100:
 					try:
 						#break loop and return to main menu
