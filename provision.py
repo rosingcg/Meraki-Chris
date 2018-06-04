@@ -64,7 +64,7 @@ def manual_network_location():
     
     while not re.match("^[A-Za-z_]{0,25}$", siteaddressstate):
         print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
-        friendlyname = input(bcolors.QUESTION + 'What is address (Number and street)? '+ bcolors.ENDC )
+        siteaddressstate = input(bcolors.QUESTION + 'What is address (Number and street)? '+ bcolors.ENDC )
     else:
         print("Site address is:  "+ siteaddressstate)
         break
@@ -75,13 +75,23 @@ def manual_network_location():
     
     while not re.match("^[A-Za-z_]{0,25}$", siteaddresscity):
         print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
-        friendlyname = input(bcolors.QUESTION + 'What City?  '+ bcolors.ENDC )
+        siteaddresscity = input(bcolors.QUESTION + 'What City?  '+ bcolors.ENDC )
     else:
         print("Site city is:  "+ siteaddresscity)
         break
 
     
-    siteaddressstate = input('What is the State? ')
+    #siteaddressstate = input('What is the State? ')
+    while True:
+        siteaddressstate = input(bcolors.QUESTION + 'What City? ' + bcolors.ENDC )
+    
+    while not re.match("^[A-Za-z_]{0,25}$", siteaddressstate):
+        print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
+        siteaddressstate = input(bcolors.QUESTION + 'What City?  '+ bcolors.ENDC )
+    else:
+        print("Site city is:  "+ siteaddressstate)
+        break
+        
     siteaddresszipcode = input('What is the Zip Code? ')
    
 
