@@ -218,33 +218,7 @@ print(bcolors.HEADER,'Now we need to give it a name and Street Address', bcolors
 addressstreet = input(bcolors.QUESTION + 'What is the Street Address?  (Do not include Suite number): ' + bcolors.ENDC)
 
 
-while True:
-    addresscity = input(bcolors.QUESTION + 'What City? ' + bcolors.ENDC )
 
-    while not re.match("^[A-Za-z_]{0,25}$", addresscity):
-        print (bcolors.FAIL,"Error! Invalid City Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.", bcolors.ENDC)
-        addresscity = input(bcolors.QUESTION + 'What City? ' + bcolors.ENDC )
-    else:
-        break
-
-while True:
-    addressstate = input(bcolors.QUESTION + 'What State (2 Letters, Capitalized): ' + bcolors.ENDC)
-
-    while not re.match("[A-Z]{2}", addressstate):
-        print (bcolors.FAIL,"Invalid Format",bcolors.ENDC)
-        switchsn = input(bcolors.QUESTION + 'What State (2 Letters, Capitalized): ' + bcolors.ENDC)
-    else:
-        break
-
-
-while True:
-    addresszip = input(bcolors.QUESTION + 'Zip Code? ' + bcolors.ENDC)
-
-    while not re.match("[0-9]{5}", addresszip):
-        print (bcolors.FAIL,"Invalid Format, Zip code should contain only 5 numbers",bcolors.ENDC)
-        addresszip = input(bcolors.QUESTION + 'Zip Code? ' + bcolors.ENDC)
-    else:
-        break
 
 fulladdress = addressstreet + ', ' + addresscity + ', ' + addressstate + ' ' +addresszip
 print(bcolors.ACTION,'This is the address that will be used:\n', bcolors.VARIABLE, fulladdress, bcolors.ENDC,sep='')
