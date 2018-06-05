@@ -2,8 +2,10 @@
 vars.py
 *.csv
 *.pyc
-*.pyc
-*.pyc
 parmeters.ini
 *.csv
 marshal*.txt
+parameters.ini
+*.ini
+parameters.ini
+vars.py
