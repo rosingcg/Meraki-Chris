@@ -1,3 +1,7 @@
+
+import ftpadp
+import adpcsvsearch
+
 from meraki import meraki as mer
 from vars import apikey, org
 from pprint import pprint
@@ -26,6 +30,7 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
 
 def meraki_provision():
     print ("Meraki Yay!")
@@ -93,6 +98,17 @@ def silverpeak_provision():
 
 def manual_site_information():
     #ADP Code with REGEX Verification
+
+print ("Provisioning Menu")
+def provision_meraki():
+    input("We will begin the proccess of provisioning a Meraki network for the first time.  Press any key to continue...")
+    print("Please standby while we download the latest ADP list...")
+    ftpadp.getadpcsv()
+    adpcsvsearch.adpsearch
+
+def manual_network_location():
+    #adpcode = input('What is the sites ADP code? ')
+
     while True:
         adpcode = input(bcolors.QUESTION + 'What is the sites ADP code? ' + bcolors.ENDC)
 
@@ -102,11 +118,18 @@ def manual_site_information():
     else:
         print("ADP Code is "+ adpcode)
 
+
     #Friendly Name with REGEX
+
+        break
+    
+    #friendlyname = input('What is the friendly name for the site? ')    
+
     while True:
         friendlyname = input(bcolors.QUESTION + 'What is the friendly name for the site? ' + bcolors.ENDC )
 
     while not re.match("^[A-Za-z_]{0,25}$", friendlyname):
+
         print (bcolors.FAIL,"Error! Invalid Friendly Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
         friendlyname = input(bcolors.QUESTION + 'What is the friendly name for the site? '+ bcolors.ENDC )
     else:
@@ -160,4 +183,55 @@ def manual_site_information():
     addresscorrect = input("Is this information correct?")
 
 
+
+=======
+        print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
+        friendlyname = input(bcolors.QUESTION + 'What is the friendly name for the site? '+ bcolors.ENDC )
+    else:
+        print("ADP Code is "+ friendlyname)
+        break
+    
+    #Site Address input    
+    while True:
+        siteaddressstate = input(bcolors.QUESTION + 'What is address (Number and street)? ' + bcolors.ENDC )
+    
+    while not re.match("^[A-Za-z_]{0,25}$", siteaddressstate):
+        print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
+        siteaddressstate = input(bcolors.QUESTION + 'What is address (Number and street)? '+ bcolors.ENDC )
+    else:
+        print("Site address is:  "+ siteaddressstate)
+        break
+    
+    #Site Address: City
+    while True:
+        siteaddresscity = input(bcolors.QUESTION + 'What City? ' + bcolors.ENDC )
+    
+    while not re.match("^[A-Za-z_]{0,25}$", siteaddresscity):
+        print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
+        siteaddresscity = input(bcolors.QUESTION + 'What City?  '+ bcolors.ENDC )
+    else:
+        print("Site city is:  "+ siteaddresscity)
+        break
+
+    
+    #siteaddressstate = input('What is the State? ')
+    while True:
+        siteaddressstate = input(bcolors.QUESTION + 'What City? ' + bcolors.ENDC )
+    
+    while not re.match("^[A-Za-z_]{0,25}$", siteaddressstate):
+        print (bcolors.FAIL,"Error! Invalid Site Name.  Can only contain Uppercase, Lowercase, and underscores.  It also can't be longer than 25 characters.",bcolors.ENDC)
+        siteaddressstate = input(bcolors.QUESTION + 'What City?  '+ bcolors.ENDC )
+    else:
+        print("Site city is:  "+ siteaddressstate)
+        break
+        
+    siteaddresszipcode = input('What is the Zip Code? ')
+   
+
+    networkname = adpcode+"-"+friendlyname
+    print('\033[1;31mRed like Radish\033[1;m')
+    #print ("Thanks for your input, here is your site information:", 'red')
+    print(siteaddressstreet)
+    print(siteaddresscity+", "+siteaddressstate+"  "+siteaddresszipcode)
+    print(networkname)
 

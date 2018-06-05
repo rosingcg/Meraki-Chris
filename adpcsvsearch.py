@@ -1,4 +1,3 @@
-from meraki import meraki as m
 from vars import ftpusername, ftppassword
 from pprint import pprint
 import ftplib
@@ -16,9 +15,9 @@ class bcolors:
     HEADER = '\033[33m'
 
 
-def adpsearch(adpcode):
+def adpsearch():
     #Dataframes for panda to read CSV
-    df = pd.read_csv(filename)
+    df = pd.read_csv(adp_locations.csv)
 
     adpcodesearch = input('What ADP Code are you searching on? ')
     #you can then get whatever cell value you are looking for.  Many ways of doing this :
